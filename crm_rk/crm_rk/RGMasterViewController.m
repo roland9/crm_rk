@@ -7,8 +7,10 @@
 //
 
 #import "RGMasterViewController.h"
-
+#import <RestKit/RestKit.h>
+#import "Client.h"
 #import "RGDetailViewController.h"
+
 
 @interface RGMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -29,13 +31,10 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
+
+    [self loadObjectsFromServer];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (void)insertNewObject:(id)sender
 {
@@ -124,14 +123,14 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Client" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -200,23 +199,53 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    NSLog(@"didChangeContent");
     [self.tableView endUpdates];
 }
 
-/*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
+// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
  
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
- */
+// - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+//{
+//    // In the simplest, most efficient, case, reload the table view.
+//    [self.tableView reloadData];
+//}
+
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+    cell.textLabel.text = [[object valueForKey:@"name"] description];
+    cell.detailTextLabel.text = [[object valueForKey:@"country"] description];
 }
 
+
+- (void)loadObjectsFromServer {
+    RKObjectManager* objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://xcake-rgcrm.herokuapp.com"]];
+    
+    //    https://github.com/RestKit/RestKit/blob/master/Docs/Object%20Mapping.md
+    RKManagedObjectStore* objectStore = [RKManagedObjectStore objectStoreWithStoreFilename:@"crm_rk.sqlite"];
+    objectManager.objectStore = objectStore;
+    
+    RKManagedObjectMapping *clientMapping = [RKManagedObjectMapping mappingForClass:[Client class] inManagedObjectStore:objectStore];
+    // NOTE: When your source and destination key paths are symmetrical, you can use mapAttributes: as a shortcut
+    [clientMapping mapAttributes:@"clientId", @"name", @"country", nil];
+    clientMapping.primaryKeyAttribute = @"clientId";
+    
+    [objectManager loadObjectsAtResourcePath:@"/clients" usingBlock:^(RKObjectLoader *loader) {
+        loader.objectMapping = clientMapping;
+        
+        RKObjectLoaderDidLoadObjectsBlock didLoadObjectsBlock = ^(NSArray *objects) {
+            NSLog(@"objects count=%d", [objects count]);
+            [self.tableView reloadData];
+        };
+        RKObjectLoaderDidFailWithErrorBlock didFailBlock = ^(NSError *error) {
+            NSLog(@"error=%@", error);
+            [self.tableView reloadData];
+        };
+        
+        loader.onDidLoadObjects = didLoadObjectsBlock;
+        loader.onDidFailWithError = didFailBlock;
+    }];
+}
 @end
