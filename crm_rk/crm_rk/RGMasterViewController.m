@@ -7,7 +7,7 @@
 //
 
 #import "RGMasterViewController.h"
-#import <RestKit/RestKit.h>
+//#import <RestKit/RestKit.h>
 #import "Client.h"
 #import "RGDetailViewController.h"
 
@@ -32,7 +32,7 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
 
-    [self loadObjectsFromServer];
+//    [self loadObjectsFromServer];
 }
 
 
@@ -130,7 +130,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"clientId" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -220,32 +220,32 @@
 }
 
 
-- (void)loadObjectsFromServer {
-    RKObjectManager* objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://xcake-rgcrm.herokuapp.com"]];
-    
-    //    https://github.com/RestKit/RestKit/blob/master/Docs/Object%20Mapping.md
-    RKManagedObjectStore* objectStore = [RKManagedObjectStore objectStoreWithStoreFilename:@"crm_rk.sqlite"];
-    objectManager.objectStore = objectStore;
-    
-    RKManagedObjectMapping *clientMapping = [RKManagedObjectMapping mappingForClass:[Client class] inManagedObjectStore:objectStore];
-    // NOTE: When your source and destination key paths are symmetrical, you can use mapAttributes: as a shortcut
-    [clientMapping mapAttributes:@"clientId", @"name", @"country", nil];
-    clientMapping.primaryKeyAttribute = @"clientId";
-    
-    [objectManager loadObjectsAtResourcePath:@"/clients" usingBlock:^(RKObjectLoader *loader) {
-        loader.objectMapping = clientMapping;
-        
-        RKObjectLoaderDidLoadObjectsBlock didLoadObjectsBlock = ^(NSArray *objects) {
-            NSLog(@"objects count=%d", [objects count]);
-            [self.tableView reloadData];
-        };
-        RKObjectLoaderDidFailWithErrorBlock didFailBlock = ^(NSError *error) {
-            NSLog(@"error=%@", error);
-            [self.tableView reloadData];
-        };
-        
-        loader.onDidLoadObjects = didLoadObjectsBlock;
-        loader.onDidFailWithError = didFailBlock;
-    }];
-}
+//- (void)loadObjectsFromServer {
+//    RKObjectManager* objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://xcake-rgcrm.herokuapp.com"]];
+//    
+//    //    https://github.com/RestKit/RestKit/blob/master/Docs/Object%20Mapping.md
+//    RKManagedObjectStore* objectStore = [RKManagedObjectStore objectStoreWithStoreFilename:@"crm_rk.sqlite"];
+//    objectManager.objectStore = objectStore;
+//    
+//    RKManagedObjectMapping *clientMapping = [RKManagedObjectMapping mappingForClass:[Client class] inManagedObjectStore:objectStore];
+//    // NOTE: When your source and destination key paths are symmetrical, you can use mapAttributes: as a shortcut
+//    [clientMapping mapAttributes:@"clientId", @"name", @"country", nil];
+//    clientMapping.primaryKeyAttribute = @"clientId";
+//    
+//    [objectManager loadObjectsAtResourcePath:@"/clients" usingBlock:^(RKObjectLoader *loader) {
+//        loader.objectMapping = clientMapping;
+//        
+//        RKObjectLoaderDidLoadObjectsBlock didLoadObjectsBlock = ^(NSArray *objects) {
+//            NSLog(@"objects count=%d", [objects count]);
+//            [self.tableView reloadData];
+//        };
+//        RKObjectLoaderDidFailWithErrorBlock didFailBlock = ^(NSError *error) {
+//            NSLog(@"error=%@", error);
+//            [self.tableView reloadData];
+//        };
+//        
+//        loader.onDidLoadObjects = didLoadObjectsBlock;
+//        loader.onDidFailWithError = didFailBlock;
+//    }];
+//}
 @end
