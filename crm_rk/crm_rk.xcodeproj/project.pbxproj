@@ -23,6 +23,8 @@
 		AB36CA8A164ED36600BE4D86 /* RGDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36CA89164ED36600BE4D86 /* RGDetailViewController.m */; };
 		AB36CAAE164ED7DF00BE4D86 /* Client.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36CAAD164ED7DF00BE4D86 /* Client.m */; };
 		AB36CAB2164ED7E000BE4D86 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36CAB1164ED7E000BE4D86 /* Contact.m */; };
+		ABC02C98164F002F00C5CDFA /* RGClientsAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC02C95164F002F00C5CDFA /* RGClientsAPIClient.m */; };
+		ABC02C99164F002F00C5CDFA /* RGClientsIncrementalStore.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC02C97164F002F00C5CDFA /* RGClientsIncrementalStore.m */; };
 		CBAE37FDA2DE44E2AA6E3AA8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84859D332F7C47FABFB9F882 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +55,10 @@
 		AB36CAAD164ED7DF00BE4D86 /* Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Client.m; sourceTree = "<group>"; };
 		AB36CAB0164ED7E000BE4D86 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		AB36CAB1164ED7E000BE4D86 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
+		ABC02C94164F002F00C5CDFA /* RGClientsAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGClientsAPIClient.h; sourceTree = "<group>"; };
+		ABC02C95164F002F00C5CDFA /* RGClientsAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGClientsAPIClient.m; sourceTree = "<group>"; };
+		ABC02C96164F002F00C5CDFA /* RGClientsIncrementalStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGClientsIncrementalStore.h; sourceTree = "<group>"; };
+		ABC02C97164F002F00C5CDFA /* RGClientsIncrementalStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGClientsIncrementalStore.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,10 @@
 		AB36CA6D164ED36600BE4D86 /* crm_rk */ = {
 			isa = PBXGroup;
 			children = (
+				ABC02C94164F002F00C5CDFA /* RGClientsAPIClient.h */,
+				ABC02C95164F002F00C5CDFA /* RGClientsAPIClient.m */,
+				ABC02C96164F002F00C5CDFA /* RGClientsIncrementalStore.h */,
+				ABC02C97164F002F00C5CDFA /* RGClientsIncrementalStore.m */,
 				AB36CA76164ED36600BE4D86 /* RGAppDelegate.h */,
 				AB36CA77164ED36600BE4D86 /* RGAppDelegate.m */,
 				AB36CA7F164ED36600BE4D86 /* MainStoryboard.storyboard */,
@@ -227,6 +237,8 @@
 				AB36CA8A164ED36600BE4D86 /* RGDetailViewController.m in Sources */,
 				AB36CAAE164ED7DF00BE4D86 /* Client.m in Sources */,
 				AB36CAB2164ED7E000BE4D86 /* Contact.m in Sources */,
+				ABC02C98164F002F00C5CDFA /* RGClientsAPIClient.m in Sources */,
+				ABC02C99164F002F00C5CDFA /* RGClientsIncrementalStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
